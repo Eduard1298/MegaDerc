@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>MegaDerc - Dashboard</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef3f9;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 25px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.header h3 {
+    margin: 0;
+    color: #4a90e2;
+}
+
+.header-right {
+    display: flex;
+    gap: 10px;
+}
+
+.profile-btn {
+    background: #eaf2ff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.logout-btn {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* CONTENIDO */
+.container {
+    padding: 20px;
+}
+
+/* CARDS */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* DOS COLUMNAS */
+.two-panels{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* PANEL */
+.panel {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+/* IMAGENES EN MÓDULOS */
+.panel-img {
+    width: 100%;
+    height: 90px;
+    background: #dfe9f3;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-size: 13px;
+}
+
+/* BOTONES */
+.btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.blue { background: #4a90e2; }
+.orange { background: #ff9800; }
+.green { background: #00c853; }
+.purple { background: #9c27b0; }
+.red { background: #e74c3c; }
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 360px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h3>✨ MegaDerc - Plataforma Dermatológica</h3>
+
+    <div class="header-right">
+        <button class="profile-btn" onclick="openProfile()">👤 Perfil</button>
+        <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
+    </div>
+</div>
+
+<div class="container">
+
+<!-- CARDS -->
+<div class="cards">
+    <div class="card">
+        <h4>Citas activas</h4>
+        <p id="totalCitas">0</p>
+    </div>
+
+    <div class="card">
+        <h4>Servicios</h4>
+        <p>8</p>
+    </div>
+
+    <div class="card">
+        <h4>Notificaciones</h4>
+        <p>2</p>
+    </div>
+</div>
+
+<!-- DOS COLUMNAS -->
+<div class="two-panels">
+
+    <!-- CITAS -->
+    <div class="panel">
+
+        <div class="panel-img">📅 Imagen citas</div>
+
+        <h3>Gestión de citas</h3>
+
+        <button class="btn blue" onclick="openModal('agendar')">Agendar cita</button>
+        <button class="btn orange" onclick="openModal('cancelar')">Cancelar cita</button>
+    </div>
+
+    <!-- PRODUCTOS -->
+    <div class="panel">
+
+        <div class="panel-img">🧴 Imagen productos</div>
+
+        <h3>Productos dermatológicos</h3>
+        <button class="btn green" onclick="goProductos()">Entrar al catálogo</button>
+    </div>
+
+</div>
+
+<!-- TRATAMIENTOS -->
+<div class="panel" style="margin-top:15px;">
+
+    <div class="panel-img">✨ Imagen tratamientos</div>
+
+    <h3>Tratamientos dermatológicos</h3>
+
+    <button class="btn purple" onclick="goTratamientos()">
+        Ver tratamientos
+    </button>
+
+</div>
+
+</div>
+
+<!-- MODALES (NO CAMBIADOS) -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+
+        <h3 id="titulo"></h3>
+
+        <div id="agendarForm">
+
+            <label>Fecha</label>
+            <input type="date" id="fecha">
+
+            <label>Hora</label>
+            <input type="time" id="hora">
+
+            <label>Tratamiento</label>
+            <select id="tratamiento">
+                <option>Limpieza facial profunda</option>
+                <option>Rejuvenecimiento facial</option>
+                <option>Tratamiento antiacné</option>
+                <option>Hidratación profunda</option>
+            </select>
+
+            <button class="btn blue" onclick="guardarCita()">Guardar cita</button>
+        </div>
+
+        <div id="lista"></div>
+
+        <button class="btn red" onclick="closeModal()">Cerrar</button>
+
+    </div>
+</div>
+
+<!-- PERFIL -->
+<div class="modal" id="profileModal">
+    <div class="modal-content">
+        <h3>👤 Perfil de usuario</h3>
+
+        <p><b>Nombre:</b> <span id="perfilNombre"></span></p>
+        <p><b>Correo:</b> <span id="perfilCorreo"></span></p>
+
+        <button class="btn red" onclick="closeProfile()">Cerrar</button>
+    </div>
+</div>
+
+<script>
+
+/* TODO TU JS QUEDA IGUAL */
+const sesion = localStorage.getItem("sesion");
+
+if (!sesion) {
+    window.location.href = "index.html";
+}
+
+const user = JSON.parse(localStorage.getItem(sesion));
+
+let citas = JSON.parse(localStorage.getItem("citas_" + sesion)) || [];
+
+document.getElementById("totalCitas").innerText = citas.length;
+
+function openProfile(){
+    document.getElementById("perfilNombre").innerText = user.nombre;
+    document.getElementById("perfilCorreo").innerText = user.email;
+    document.getElementById("profileModal").style.display = "flex";
+}
+
+function closeProfile(){
+    document.getElementById("profileModal").style.display = "none";
+}
+
+function openModal(tipo){
+    document.getElementById("modal").style.display = "flex";
+
+    if(tipo === "agendar"){
+        document.getElementById("titulo").innerText = "Agendar cita";
+        document.getElementById("agendarForm").style.display = "block";
+        document.getElementById("lista").innerHTML = "";
+    }
+
+    if(tipo === "cancelar"){
+        document.getElementById("titulo").innerText = "Cancelar cita";
+        document.getElementById("agendarForm").style.display = "none";
+
+        let html = "";
+
+        if(citas.length === 0){
+            html = "<p>No tienes citas registradas</p>";
+        } else {
+            citas.forEach((c,i)=>{
+                html += `
+                <div style="margin-bottom:10px;">
+                    📅 ${c.fecha} ${c.hora}<br>
+                    💆 ${c.tratamiento}<br>
+                    <button class="btn red" onclick="eliminarCita(${i})">Cancelar</button>
+                </div>
+                `;
+            });
+        }
+
+        document.getElementById("lista").innerHTML = html;
+    }
+}
+
+function guardarCita(){
+    const fecha = document.getElementById("fecha").value;
+    const hora = document.getElementById("hora").value;
+    const tratamiento = document.getElementById("tratamiento").value;
+
+    if(!fecha || !hora){
+        alert("Completa todos los campos");
+        return;
+    }
+
+    citas.push({fecha, hora, tratamiento});
+
+    localStorage.setItem("citas_" + sesion, JSON.stringify(citas));
+
+    document.getElementById("totalCitas").innerText = citas.length;
+
+    closeModal();
+}
+
+function eliminarCita(i){
+    citas.splice(i,1);
+    localStorage.setItem("citas_" + sesion, JSON.stringify(citas));
+    document.getElementById("totalCitas").innerText = citas.length;
+    openModal("cancelar");
+}
+
+function goProductos(){
+    window.location.href = "productos.html";
+}
+
+function goTratamientos(){
+    window.location.href = "tratamientos.html";
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display = "none";
+}
+
+function logout(){
+    localStorage.removeItem("sesion");
+    window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>

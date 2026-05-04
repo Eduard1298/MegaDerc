@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Tratamientos - MegaDerc</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#eef3f9;
+}
+
+.header{
+    background:white;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+.back{
+    padding:10px 15px;
+    border:none;
+    background:#4a90e2;
+    color:white;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.container{
+    padding:30px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+}
+
+.card h3{
+    color:#4a90e2;
+}
+
+.btn{
+    margin-top:10px;
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:#4a90e2;
+    color:white;
+    cursor:pointer;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    width:320px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2>✨ Tratamientos Dermatológicos</h2>
+    <button class="back" onclick="volver()">Volver</button>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h3>Limpieza Facial Profunda</h3>
+        <button class="btn" onclick="ver('limpieza')">Ver detalle</button>
+    </div>
+
+    <div class="card">
+        <h3>Rejuvenecimiento Facial</h3>
+        <button class="btn" onclick="ver('rejuvenecimiento')">Ver detalle</button>
+    </div>
+
+    <div class="card">
+        <h3>Hidratación Profunda</h3>
+        <button class="btn" onclick="ver('hidratacion')">Ver detalle</button>
+    </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3 id="titulo"></h3>
+        <p id="detalle"></p>
+        <button class="btn" onclick="cerrar()">Cerrar</button>
+    </div>
+</div>
+
+<script>
+
+function volver(){
+    window.location.href = "dashboard.html";
+}
+
+function ver(tipo){
+
+    const data = {
+        limpieza: ["Limpieza Facial", "Elimina impurezas, puntos negros y mejora textura de la piel."],
+        rejuvenecimiento: ["Rejuvenecimiento Facial", "Reduce líneas de expresión y mejora elasticidad."],
+        hidratacion: ["Hidratación Profunda", "Nutre la piel seca y restaura brillo natural."]
+    };
+
+    document.getElementById("titulo").innerText = data[tipo][0];
+    document.getElementById("detalle").innerText = data[tipo][1];
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+function cerrar(){
+    document.getElementById("modal").style.display = "none";
+}
+
+</script>
+
+</body>
+</html>

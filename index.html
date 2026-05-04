@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>MegaDerc</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #e6f0ff, #f7fbff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* TARJETA */
+.card {
+    background: white;
+    width: 360px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* ICONO */
+.icon {
+    width: 70px;
+    height: 70px;
+    background: #5aa2ff;
+    border-radius: 50%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 30px;
+}
+
+/* TITULOS */
+.title {
+    color: #4a90e2;
+    font-size: 22px;
+    margin-top: 10px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* INPUTS */
+.input-group {
+    text-align: left;
+    margin-top: 15px;
+}
+
+label {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+/* ROW */
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.row label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.row a {
+    text-decoration: none;
+    color: #4a90e2;
+    cursor: pointer;
+}
+
+/* BOTÓN */
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: #5aa2ff;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #3b82f6;
+}
+
+/* LINKS */
+.bottom {
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+.bottom a {
+    color: #4a90e2;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* MENSAJES */
+#error, #msg, #msgReg {
+    font-size: 13px;
+}
+
+/* OCULTAR */
+.hidden {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="card" id="loginCard">
+
+    <div class="icon">✨</div>
+
+    <div class="title">MegaDerc</div>
+    <div class="subtitle">Deja tu piel en manos de profesionales</div>
+
+    <div class="input-group">
+        <label>Correo Electrónico</label>
+        <input type="email" id="loginEmail">
+    </div>
+
+    <div class="input-group">
+        <label>Contraseña</label>
+        <input type="password" id="loginPassword">
+    </div>
+
+    <div class="row">
+        <label>
+            <input type="checkbox"> Recordarme
+        </label>
+
+        <a onclick="mostrarRecuperar()">¿Olvidaste tu contraseña?</a>
+    </div>
+
+    <button onclick="login()">Iniciar Sesión</button>
+
+    <div class="bottom">
+        ¿No tienes cuenta? <a onclick="mostrarRegistro()">Registrarse</a>
+    </div>
+
+    <p id="error"></p>
+</div>
+
+<!-- RECUPERAR -->
+<div class="card hidden" id="recoverCard">
+
+    <div class="title">Recuperar contraseña</div>
+    <div class="subtitle">Ingresa tu correo para recuperar acceso</div>
+
+    <div class="input-group">
+        <label>Correo Electrónico</label>
+        <input type="email" id="recoverEmail">
+    </div>
+
+    <button onclick="recuperar()">Recuperar</button>
+
+    <p id="msg"></p>
+
+    <div class="bottom">
+        <a onclick="volverLogin()">Volver al login</a>
+    </div>
+</div>
+
+<!-- REGISTRO -->
+<div class="card hidden" id="registerCard">
+
+    <div class="title">Crear cuenta</div>
+    <div class="subtitle">Regístrate en MegaDerc</div>
+
+    <div class="input-group">
+        <label>Nombre</label>
+        <input type="text" id="regNombre">
+    </div>
+
+    <div class="input-group">
+        <label>Correo</label>
+        <input type="email" id="regEmail">
+    </div>
+
+    <div class="input-group">
+        <label>Contraseña</label>
+        <input type="password" id="regPassword">
+    </div>
+
+    <button onclick="registrar()">Registrarse</button>
+
+    <p id="msgReg"></p>
+
+    <div class="bottom">
+        <a onclick="volverLogin()">Volver al login</a>
+    </div>
+</div>
+
+<script>
+
+// ================= LOGIN =================
+function login() {
+    const email = document.getElementById("loginEmail").value;
+    const pass = document.getElementById("loginPassword").value;
+
+    const data = localStorage.getItem(email);
+
+    if (!data) {
+        document.getElementById("error").style.color = "red";
+        document.getElementById("error").innerText = "Usuario no existe";
+        return;
+    }
+
+    const user = JSON.parse(data);
+
+    if (user.password === pass) {
+        localStorage.setItem("sesion", email);
+        window.location.href = "dashboard.html";
+    } else {
+        document.getElementById("error").style.color = "red";
+        document.getElementById("error").innerText = "Contraseña incorrecta";
+    }
+}
+
+// ================= REGISTRO =================
+function mostrarRegistro() {
+    document.getElementById("loginCard").classList.add("hidden");
+    document.getElementById("registerCard").classList.remove("hidden");
+}
+
+function registrar() {
+    const nombre = document.getElementById("regNombre").value;
+    const email = document.getElementById("regEmail").value;
+    const password = document.getElementById("regPassword").value;
+    const msg = document.getElementById("msgReg");
+
+    // campos vacíos
+    if (!nombre || !email || !password) {
+        msg.style.color = "red";
+        msg.innerText = "Completa todos los campos";
+        return;
+    }
+
+    // validación de correo
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailValido.test(email)) {
+        msg.style.color = "red";
+        msg.innerText = "Correo inválido (debe tener @ y dominio)";
+        return;
+    }
+
+    // duplicados
+    if (localStorage.getItem(email)) {
+        msg.style.color = "red";
+        msg.innerText = "Este correo ya está registrado";
+        return;
+    }
+
+    const user = { nombre, email, password };
+    localStorage.setItem(email, JSON.stringify(user));
+
+    msg.style.color = "green";
+    msg.innerText = "Usuario creado correctamente";
+
+    setTimeout(() => {
+        volverLogin();
+    }, 1200);
+}
+
+// ================= RECUPERAR =================
+function mostrarRecuperar() {
+    document.getElementById("loginCard").classList.add("hidden");
+    document.getElementById("recoverCard").classList.remove("hidden");
+}
+
+function recuperar() {
+    const email = document.getElementById("recoverEmail").value;
+    const msg = document.getElementById("msg");
+
+    const data = localStorage.getItem(email);
+
+    if (!data) {
+        msg.style.color = "red";
+        msg.innerText = "Este correo no está registrado";
+        return;
+    }
+
+    const user = JSON.parse(data);
+
+    msg.style.color = "green";
+    msg.innerText = "Tu contraseña es: " + user.password;
+}
+
+// ================= GENERAL =================
+function volverLogin() {
+    document.getElementById("loginCard").classList.remove("hidden");
+    document.getElementById("recoverCard").classList.add("hidden");
+    document.getElementById("registerCard").classList.add("hidden");
+}
+
+</script>
+
+</body>
+</html>

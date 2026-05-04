@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Productos Dermatológicos - MegaDerc</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#eef3f9;
+}
+
+/* HEADER */
+.header{
+    background:white;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+.header h2{
+    color:#4a90e2;
+}
+
+.back{
+    padding:10px 15px;
+    border:none;
+    background:#4a90e2;
+    color:white;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* BOTÓN CARRITO */
+.cart-btn{
+    background:#00c853;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* GRID */
+.container{
+    padding:30px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+/* PRODUCTO */
+.producto{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.producto h3{
+    color:#4a90e2;
+}
+
+.precio{
+    font-weight:bold;
+    color:#2ecc71;
+    margin-top:10px;
+}
+
+.desc{
+    font-size:13px;
+    color:#666;
+    margin-top:5px;
+}
+
+/* BOTONES */
+.btn{
+    margin-top:10px;
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#4a90e2;
+    color:white;
+}
+
+.add{
+    background:#00c853;
+}
+
+/* 🛒 CARRITO */
+.cart{
+    position:fixed;
+    top:60px;
+    right:20px;
+    width:300px;
+    background:white;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    padding:15px;
+    border-radius:15px;
+    display:none;
+    z-index:1000;
+}
+
+.item{
+    border-bottom:1px solid #eee;
+    padding:8px 0;
+    font-size:14px;
+}
+
+.total{
+    font-weight:bold;
+    margin-top:10px;
+    color:#2ecc71;
+}
+
+/* BOTÓN PAGO */
+.pay{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:#ff9800;
+    color:white;
+    cursor:pointer;
+}
+
+/* 🎉 MODAL COMPRA */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    justify-content:center;
+    align-items:center;
+    z-index:2000;
+}
+
+.modal-content{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+    width:300px;
+}
+
+.modal-content h2{
+    color:#2ecc71;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h2>🧴 Productos Dermatológicos - MegaDerc</h2>
+
+    <div>
+        <button class="cart-btn" onclick="toggleCart()">🛒 Carrito</button>
+        <button class="back" onclick="volver()">Volver</button>
+    </div>
+</div>
+
+<!-- PRODUCTOS -->
+<div class="container">
+
+    <div class="producto">
+        <h3>Crema Antiacné Pro</h3>
+        <p class="desc">Reduce acné y grasa.</p>
+        <p class="precio">$19.99</p>
+        <button class="btn add" onclick="add('Crema Antiacné',19.99)">Agregar</button>
+    </div>
+
+    <div class="producto">
+        <h3>Protector Solar SPF 50+</h3>
+        <p class="precio">$24.50</p>
+        <button class="btn add" onclick="add('Protector Solar',24.50)">Agregar</button>
+    </div>
+
+    <div class="producto">
+        <h3>Serum Rejuvenecedor</h3>
+        <p class="precio">$29.90</p>
+        <button class="btn add" onclick="add('Serum',29.90)">Agregar</button>
+    </div>
+
+    <div class="producto">
+        <h3>Gel Hidratante</h3>
+        <p class="precio">$15.00</p>
+        <button class="btn add" onclick="add('Gel Hidratante',15)">Agregar</button>
+    </div>
+
+    <div class="producto">
+        <h3>Limpiador Facial</h3>
+        <p class="precio">$12.50</p>
+        <button class="btn add" onclick="add('Limpiador Facial',12.5)">Agregar</button>
+    </div>
+
+    <div class="producto">
+        <h3>Crema Nocturna</h3>
+        <p class="precio">$18.00</p>
+        <button class="btn add" onclick="add('Crema Nocturna',18)">Agregar</button>
+    </div>
+
+</div>
+
+<!-- 🛒 CARRITO -->
+<div class="cart" id="cart">
+
+    <h3>🛒 Carrito</h3>
+
+    <div id="cartItems"></div>
+
+    <p class="total">Total: $<span id="total">0</span></p>
+
+    <button class="pay" onclick="pagar()">Pagar</button>
+</div>
+
+<!-- 🎉 MODAL -->
+<div class="modal" id="compraModal">
+    <div class="modal-content">
+        <h2>🎉 Gracias por su compra</h2>
+        <p>Su pedido ha sido procesado correctamente.</p>
+
+        <button class="btn" onclick="cerrarModal()">Cerrar</button>
+    </div>
+</div>
+
+<script>
+
+let carrito = [];
+let total = 0;
+
+/* AGREGAR */
+function add(nombre,precio){
+    carrito.push({nombre,precio});
+    total += precio;
+    render();
+}
+
+/* RENDER */
+function render(){
+    let html = "";
+
+    carrito.forEach((p,i)=>{
+        html += `
+        <div>
+            ${p.nombre} - $${p.precio}
+            <button onclick="remove(${i})">❌</button>
+        </div>
+        `;
+    });
+
+    document.getElementById("cartItems").innerHTML = html;
+    document.getElementById("total").innerText = total.toFixed(2);
+}
+
+/* ELIMINAR */
+function remove(i){
+    total -= carrito[i].precio;
+    carrito.splice(i,1);
+    render();
+}
+
+/* TOGGLE CARRITO */
+function toggleCart(){
+    const cart = document.getElementById("cart");
+    cart.style.display = cart.style.display === "block" ? "none" : "block";
+}
+
+/* PAGO */
+function pagar(){
+    carrito = [];
+    total = 0;
+    render();
+
+    document.getElementById("cart").style.display = "none";
+    document.getElementById("compraModal").style.display = "flex";
+}
+
+/* CERRAR MODAL */
+function cerrarModal(){
+    document.getElementById("compraModal").style.display = "none";
+}
+
+/* VOLVER */
+function volver(){
+    window.location.href = "dashboard.html";
+}
+
+</script>
+
+</body>
+</html>
