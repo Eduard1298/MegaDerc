@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MegaDerc — Dermatología Especializada</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --azul: #2563eb;
+    --azul-light: #dbeafe;
+    --azul-dark: #1e40af;
+    --skin: #fdf6f0;
+    --skin2: #f5ede3;
+    --text: #1e293b;
+    --muted: #64748b;
+    --white: #ffffff;
+    --error: #ef4444;
+    --success: #10b981;
+    --radius: 16px;
+    --shadow: 0 20px 60px rgba(37,99,235,0.10);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--skin);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Fondo decorativo */
+body::before {
+    content: '';
+    position: fixed;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+body::after {
+    content: '';
+    position: fixed;
+    bottom: -200px; left: -200px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* WRAPPER */
+.wrapper {
+    width: 420px;
+    animation: fadeUp 0.5s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* LOGO */
+.logo-area {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.logo-circle {
+    width: 72px; height: 72px;
+    background: var(--azul);
+    border-radius: 24px;
+    margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    box-shadow: 0 10px 30px rgba(37,99,235,0.3);
+}
+
+.logo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--text);
+    letter-spacing: -0.5px;
+}
+
+.logo-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* CARD */
+.card {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(37,99,235,0.06);
+}
+
+.card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.card-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+
+/* INPUTS */
+.field {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    background: #fafbfc;
+}
+
+input:focus {
+    border-color: var(--azul);
+    background: white;
+}
+
+/* ROW */
+.row-check {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    margin: 6px 0 20px;
+    color: var(--muted);
+}
+
+.row-check a {
+    color: var(--azul);
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.row-check label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: var(--muted);
+}
+
+/* BOTÓN PRINCIPAL */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: var(--azul);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+}
+
+.btn-primary:hover {
+    background: var(--azul-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(37,99,235,0.3);
+}
+
+/* BOTTOM LINK */
+.bottom-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.bottom-link a {
+    color: var(--azul);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* MENSAJES */
+.msg {
+    font-size: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-top: 14px;
+    text-align: center;
+    display: none;
+}
+
+.msg.error {
+    background: #fef2f2;
+    color: var(--error);
+    border: 1px solid #fecaca;
+    display: block;
+}
+
+.msg.success {
+    background: #f0fdf4;
+    color: var(--success);
+    border: 1px solid #bbf7d0;
+    display: block;
+}
+
+/* DIVIDER */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+/* OCULTAR */
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+    <!-- LOGO -->
+    <div class="logo-area">
+        <div class="logo-circle">✨</div>
+        <div class="logo-title">MegaDerc</div>
+        <div class="logo-sub">Deja tu piel en manos de profesionales</div>
+    </div>
+
+    <!-- ===== LOGIN ===== -->
+    <div class="card" id="loginCard">
+        <div class="card-title">Bienvenido de nuevo</div>
+        <div class="card-sub">Inicia sesión en tu cuenta</div>
+
+        <div class="field">
+            <label>Correo electrónico</label>
+            <input type="email" id="loginEmail" placeholder="correo@ejemplo.com">
+        </div>
+
+        <div class="field">
+            <label>Contraseña</label>
+            <input type="password" id="loginPassword" placeholder="••••••••">
+        </div>
+
+        <div class="row-check">
+            <label><input type="checkbox"> Recordarme</label>
+            <a onclick="mostrarRecuperar()">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button class="btn-primary" onclick="login()">Iniciar sesión</button>
+
+        <p class="msg" id="errorLogin"></p>
+
+        <div class="bottom-link">
+            ¿No tienes cuenta? <a onclick="mostrarRegistro()">Regístrate gratis</a>
+        </div>
+    </div>
+
+    <!-- ===== RECUPERAR ===== -->
+    <div class="card hidden" id="recoverCard">
+        <div class="card-title">Recuperar contraseña</div>
+        <div class="card-sub">Te mostraremos tu contraseña registrada</div>
+
+        <div class="field">
+            <label>Correo electrónico</label>
+            <input type="email" id="recoverEmail" placeholder="correo@ejemplo.com">
+        </div>
+
+        <button class="btn-primary" onclick="recuperar()">Recuperar</button>
+
+        <p class="msg" id="msgRecover"></p>
+
+        <div class="bottom-link">
+            <a onclick="volverLogin()">← Volver al inicio de sesión</a>
+        </div>
+    </div>
+
+    <!-- ===== REGISTRO ===== -->
+    <div class="card hidden" id="registerCard">
+        <div class="card-title">Crear cuenta</div>
+        <div class="card-sub">Únete a MegaDerc hoy</div>
+
+        <div class="field">
+            <label>Nombre completo</label>
+            <input type="text" id="regNombre" placeholder="Tu nombre">
+        </div>
+
+        <div class="field">
+            <label>Teléfono</label>
+            <input type="text" id="regTelefono" placeholder="3XX XXX XXXX">
+        </div>
+
+        <div class="field">
+            <label>Correo electrónico</label>
+            <input type="email" id="regEmail" placeholder="correo@ejemplo.com">
+        </div>
+
+        <div class="field">
+            <label>Contraseña</label>
+            <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres">
+        </div>
+
+        <button class="btn-primary" onclick="registrar()">Crear cuenta</button>
+
+        <p class="msg" id="msgReg"></p>
+
+        <div class="bottom-link">
+            <a onclick="volverLogin()">← Ya tengo cuenta</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// ===== LOGIN =====
+
+/**
+ * Realiza el proceso de autenticación de usuarios.
+ *
+ * Proceso:
+ * 1. Obtiene correo y contraseña ingresados.
+ * 2. Busca la información del usuario en localStorage.
+ * 3. Verifica si el usuario existe.
+ * 4. Compara la contraseña almacenada con la ingresada.
+ * 5. Si las credenciales son válidas:
+ *      - Guarda la sesión activa.
+ *      - Redirecciona al dashboard.
+ * 6. Si las credenciales son incorrectas:
+ *      - Muestra mensaje de error.
+ */
+
+function login() {
+    const email = document.getElementById("loginEmail").value.trim();
+    const pass  = document.getElementById("loginPassword").value;
+    const err   = document.getElementById("errorLogin");
+
+    const data = localStorage.getItem(email);
+    if (!data) { showMsg(err, "error", "Este correo no está registrado"); return; }
+
+    const user = JSON.parse(data);
+    if (user.password === pass) {
+        localStorage.setItem("sesion", email);
+        window.location.href = "dashboard.html";
+    } else {
+        showMsg(err, "error", "Contraseña incorrecta");
+    }
+}
+
+// ===== REGISTRO =====
+
+/**
+ * Muestra el formulario de registro de nuevos usuarios.
+ *
+ * Proceso:
+ * 1. Oculta el formulario de inicio de sesión.
+ * 2. Muestra el formulario de registro.
+ */
+
+function mostrarRegistro() {
+    document.getElementById("loginCard").classList.add("hidden");
+    document.getElementById("registerCard").classList.remove("hidden");
+}
+
+/**
+ * Registra un nuevo usuario dentro del sistema.
+ *
+ * Proceso:
+ * 1. Captura la información ingresada.
+ * 2. Valida campos obligatorios.
+ * 3. Verifica formato del correo electrónico.
+ * 4. Valida longitud mínima de contraseña.
+ * 5. Comprueba que el usuario no exista previamente.
+ * 6. Crea objeto usuario.
+ * 7. Guarda el usuario en localStorage.
+ * 8. Inicia sesión automáticamente.
+ * 9. Redirecciona al dashboard.
+ */
+
+function registrar() {
+    const nombre    = document.getElementById("regNombre").value.trim();
+    const telefono  = document.getElementById("regTelefono").value.trim();
+    const email     = document.getElementById("regEmail").value.trim();
+    const password  = document.getElementById("regPassword").value;
+    const msg       = document.getElementById("msgReg");
+
+        // Validar campos obligatorios
+
+    if (!nombre || !email || !password) {
+        showMsg(msg, "error", "Completa todos los campos obligatorios"); return;
+    }
+
+        // Validar formato del correo
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showMsg(msg, "error", "Ingresa un correo válido"); return;
+    }
+
+     // Validar longitud mínima de contraseña
+
+    if (password.length < 6) {
+        showMsg(msg, "error", "La contraseña debe tener al menos 6 caracteres"); return;
+    }
+
+     // Verificar si el correo ya está registrado
+
+    if (localStorage.getItem(email)) {
+        showMsg(msg, "error", "Este correo ya está registrado"); return;
+    }
+
+    // Crear objeto usuario
+
+    const user = { nombre, telefono, email, password, foto: "" };
+
+    // Guardar usuario
+
+
+    localStorage.setItem(email, JSON.stringify(user));
+
+    // Mostrar confirmación
+
+    showMsg(msg, "success", "¡Cuenta creada! Redirigiendo...");
+
+    setTimeout(() => {
+        localStorage.setItem("sesion", email);
+        window.location.href = "dashboard.html";
+    }, 1200);
+}
+
+// ===== RECUPERAR =====
+
+/**
+ * Muestra el formulario de recuperación de contraseña.
+ *
+ * Proceso:
+ * 1. Oculta el login.
+ * 2. Muestra la pantalla de recuperación.
+ */
+
+function mostrarRecuperar() {
+    document.getElementById("loginCard").classList.add("hidden");
+    document.getElementById("recoverCard").classList.remove("hidden");
+}
+
+/**
+ * Recupera la contraseña asociada a un correo electrónico.
+ *
+ * Proceso:
+ * 1. Obtiene el correo ingresado.
+ * 2. Busca el usuario almacenado.
+ * 3. Verifica si existe.
+ * 4. Si existe muestra la contraseña registrada.
+ * 5. Si no existe muestra mensaje de error.
+ *
+ * Nota:
+ * Esta funcionalidad es únicamente académica.
+ * En producción las contraseñas deben almacenarse cifradas.
+ */
+
+function recuperar() {
+    const email = document.getElementById("recoverEmail").value.trim();
+    const msg   = document.getElementById("msgRecover");
+    const data  = localStorage.getItem(email);
+    if (!data) { showMsg(msg, "error", "Este correo no está registrado"); return; }
+    const user = JSON.parse(data);
+    showMsg(msg, "success", "Tu contraseña es: " + user.password);
+}
+
+/**
+ * Retorna a la pantalla principal de inicio de sesión.
+ *
+ * Proceso:
+ * 1. Muestra el formulario de login.
+ * 2. Oculta registro.
+ * 3. Oculta recuperación.
+ */
+
+function volverLogin() {
+    document.getElementById("loginCard").classList.remove("hidden");
+    document.getElementById("recoverCard").classList.add("hidden");
+    document.getElementById("registerCard").classList.add("hidden");
+}
+
+// ===== HELPER =====
+
+/**
+ * Muestra mensajes informativos al usuario.
+ *
+ * Proceso:
+ * 1. Asigna la clase CSS correspondiente.
+ * 2. Inserta el texto.
+ * 3. Muestra el mensaje visualmente.
+ */
+
+function showMsg(el, tipo, texto) {
+    el.className = "msg " + tipo;
+    el.innerText = texto;
+}
+</script>
+</body>
+</html>

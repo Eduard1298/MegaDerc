@@ -1,0 +1,111 @@
+/*
+ * MegaDerc — Hoja de estilos
+ */
+
+:root {
+    --azul:       #2563eb;
+    --azul-light: #dbeafe;
+    --azul-dark:  #1e40af;
+    --skin:       #fdf6f0;
+    --white:      #ffffff;
+    --text:       #1e293b;
+    --muted:      #64748b;
+    --success:    #10b981;
+    --warning:    #f59e0b;
+    --danger:     #ef4444;
+    --purple:     #7c3aed;
+    --shadow:     0 4px 20px rgba(0,0,0,0.06);
+    --radius:     16px;
+    --font-head:  'Playfair Display', serif;
+    --font-body:  'DM Sans', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font-body);
+    color: var(--text);
+    background: #f1f5f9;
+}
+
+/* UTILIDADES */
+.hidden { display: none !important; }
+
+.text-muted { color: var(--muted); }
+.text-success { color: var(--success); }
+.text-danger  { color: var(--danger); }
+
+/* BOTONES UTILITARIOS */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 11px 20px; border: none; border-radius: 10px;
+    font-family: var(--font-body); font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.18s; text-decoration: none;
+}
+
+.btn-primary  { background: var(--azul);    color: white; }
+.btn-success  { background: var(--success); color: white; }
+.btn-warning  { background: var(--warning); color: white; }
+.btn-danger   { background: var(--danger);  color: white; }
+.btn-purple   { background: var(--purple);  color: white; }
+.btn-ghost    { background: #f8fafc; color: var(--text); border: 1px solid #e2e8f0; }
+
+.btn-primary:hover { background: var(--azul-dark); }
+.btn-ghost:hover   { background: var(--azul-light); border-color: var(--azul); color: var(--azul); }
+
+/* INPUTS GLOBALES */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    background: #fafbfc;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--azul);
+    background: white;
+}
+
+/* HEADER COMÚN */
+.header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 28px; height: 64px; background: white;
+    box-shadow: 0 1px 0 #e2e8f0; position: sticky; top: 0; z-index: 100;
+}
+
+/* PANEL / CARD */
+.panel, .card {
+    background: white; border-radius: var(--radius);
+    box-shadow: var(--shadow); border: 1px solid #f1f5f9;
+}
+
+/* MODAL OVERLAY */
+.modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 500;
+    justify-content: center; align-items: center;
+}
+.modal-overlay.open { display: flex; }
+
+/* TOAST */
+.toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--text); color: white;
+    padding: 12px 20px; border-radius: 12px;
+    font-size: 13px; font-weight: 500; z-index: 9999;
+    opacity: 0; transform: translateY(10px); transition: all 0.3s;
+    pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }

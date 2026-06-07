@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MegaDerc — Tratamientos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+    /* ==========================================
+   VARIABLES GLOBALES DEL SISTEMA
+
+   Centralizan colores, sombras, radios
+   y estilos reutilizables en toda la página.
+========================================== */
+
+:root {
+    --azul: #2563eb;
+    --azul-light: #dbeafe;
+    --azul-dark: #1e40af;
+    --white: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --purple: #7c3aed;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --shadow: 0 4px 20px rgba(0,0,0,0.06);
+    --radius: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 28px;
+    height: 64px;
+    background: white;
+    box-shadow: 0 1px 0 #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-logo {
+    display: flex; align-items: center; gap: 10px;
+}
+
+.header-logo .dot {
+    width: 36px; height: 36px;
+    background: var(--purple);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+}
+
+.header-logo span {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.back-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.2s;
+}
+.back-btn:hover { background: var(--azul-light); border-color: var(--azul); color: var(--azul); }
+
+/* MAIN */
+.main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 20px;
+}
+
+.page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.page-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 28px;
+}
+
+/* ==========================================
+   DISTRIBUCIÓN DE TARJETAS
+
+   Organiza los tratamientos en una cuadrícula
+   de cuatro columnas.
+========================================== */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+/* CARD */
+
+/* ==========================================
+   TARJETAS DE TRATAMIENTOS
+
+   Muestran información resumida de cada
+   servicio dermatológico disponible.
+========================================== */
+
+.card {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid #f1f5f9;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+
+.card-banner {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+}
+
+.card-body {
+    padding: 16px;
+}
+
+.card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.card-tag {
+    display: inline-block;
+    background: var(--azul-light);
+    color: var(--azul);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.btn-detail {
+    width: 100%;
+    padding: 9px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--purple);
+    color: white;
+    transition: all 0.18s;
+}
+.btn-detail:hover { background: #6d28d9; }
+
+/* MODAL */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 500;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+    background: white;
+    border-radius: 20px;
+    width: 420px;
+    max-width: 95vw;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+    animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+.modal-banner {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+}
+
+.modal-body {
+    padding: 24px 28px 28px;
+}
+
+.modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 6px;
+}
+
+.modal-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.modal-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+}
+
+.detail-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.detail-item {
+    flex: 1;
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 10px 14px;
+    text-align: center;
+}
+
+.detail-item .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.detail-item .value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: var(--azul);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+}
+.btn-primary:hover { background: var(--azul-dark); }
+
+.btn-ghost {
+    width: 100%;
+    padding: 10px;
+    background: #f8fafc;
+    color: var(--text);
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-ghost:hover { background: var(--azul-light); }
+
+/* TOAST */
+.toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--text);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- =========================================
+     HEADER PRINCIPAL
+     Contiene el logo de MegaDerc y el botón
+     para regresar al dashboard.
+========================================= -->
+
+<div class="header">
+    <div class="header-logo">
+        <div class="dot">✨</div>
+        <span>MegaDerc</span>
+    </div>
+    <button class="back-btn" onclick="window.location.href='dashboard.html'">
+        ← Volver al inicio
+    </button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+    <div class="page-title">Tratamientos dermatológicos</div>
+    <div class="page-sub">Conoce nuestros 8 servicios especializados y agenda el que necesitas</div>
+
+    <!-- =========================================
+     CONTENEDOR DINÁMICO DE TRATAMIENTOS
+
+     Las tarjetas se generan automáticamente
+     desde el arreglo "tratamientos" usando
+     JavaScript.
+========================================= -->
+
+
+    <div class="grid" id="gridTratamientos"></div>
+</div>
+
+<!-- =========================================
+     MODAL DE DETALLE DEL TRATAMIENTO
+
+     Se muestra al seleccionar una tarjeta.
+     Presenta información completa del
+     tratamiento y permite iniciar el proceso
+     de agendamiento.
+========================================= -->
+
+<div class="modal-overlay" id="detailModal">
+    <div class="modal-box">
+        <div class="modal-banner" id="mBanner"></div>
+        <div class="modal-body">
+            <div class="modal-tag" id="mTag"></div>
+            <div class="modal-title" id="mTitle"></div>
+            <div class="modal-desc" id="mDesc"></div>
+            <div class="detail-row">
+                <div class="detail-item">
+                    <div class="label">Duración</div>
+                    <div class="value" id="mDur"></div>
+                </div>
+                <div class="detail-item">
+                    <div class="label">Sesiones</div>
+                    <div class="value" id="mSes"></div>
+                </div>
+                <div class="detail-item">
+                    <div class="label">Desde</div>
+                    <div class="value" id="mPrecio"></div>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="agendarDesdeModal()">📅 Agendar este tratamiento</button>
+            <button class="btn-ghost" onclick="cerrarModal()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+    /* ==========================================
+   CATÁLOGO DE TRATAMIENTOS
+
+   Contiene toda la información necesaria
+   para generar dinámicamente las tarjetas
+   y el contenido del modal.
+========================================== */
+
+const tratamientos = [
+    {
+        emoji: "🫧",
+        color: "linear-gradient(135deg, #dbeafe, #bfdbfe)",
+        nombre: "Limpieza Facial Profunda",
+        desc: "Elimina impurezas, exceso de grasa, puntos negros y mejora la textura de la piel con técnicas especializadas.",
+        duracion: "60 min",
+        sesiones: "1-3",
+        precio: "$80.000",
+        tag: "Más popular",
+        tagColor: "#dbeafe",
+        tagTxt: "#2563eb"
+    },
+    {
+        emoji: "✨",
+        color: "linear-gradient(135deg, #ede9fe, #ddd6fe)",
+        nombre: "Rejuvenecimiento Facial",
+        desc: "Reduce líneas de expresión, mejora la elasticidad y firmeza de la piel con tecnología avanzada.",
+        duracion: "90 min",
+        sesiones: "4-6",
+        precio: "$250.000",
+        tag: "Premium",
+        tagColor: "#ede9fe",
+        tagTxt: "#7c3aed"
+    },
+    {
+        emoji: "💧",
+        color: "linear-gradient(135deg, #d1fae5, #a7f3d0)",
+        nombre: "Hidratación Profunda",
+        desc: "Nutre y restaura el equilibrio hídrico de pieles secas o deshidratadas, devolviendo luminosidad y suavidad.",
+        duracion: "45 min",
+        sesiones: "1-4",
+        precio: "$100.000",
+        tag: "Recomendado",
+        tagColor: "#d1fae5",
+        tagTxt: "#10b981"
+    },
+    {
+        emoji: "🔬",
+        color: "linear-gradient(135deg, #ffedd5, #fed7aa)",
+        nombre: "Tratamiento Antiacné",
+        desc: "Protocolo especializado para reducir lesiones activas, controlar la producción de sebo y prevenir cicatrices.",
+        duracion: "75 min",
+        sesiones: "6-8",
+        precio: "$120.000",
+        tag: "Especializado",
+        tagColor: "#ffedd5",
+        tagTxt: "#f59e0b"
+    },
+    {
+        emoji: "🧪",
+        color: "linear-gradient(135deg, #fce7f3, #fbcfe8)",
+        nombre: "Peeling Químico",
+        desc: "Exfoliación controlada que estimula la renovación celular, mejora manchas, cicatrices y textura irregular.",
+        duracion: "60 min",
+        sesiones: "3-5",
+        precio: "$180.000",
+        tag: "Avanzado",
+        tagColor: "#fce7f3",
+        tagTxt: "#db2777"
+    },
+    {
+        emoji: "🌟",
+        color: "linear-gradient(135deg, #fef9c3, #fef08a)",
+        nombre: "Tratamiento de Manchas",
+        desc: "Reduce hiperpigmentación, manchas solares y melasma con activos despigmentantes de última generación.",
+        duracion: "60 min",
+        sesiones: "6-10",
+        precio: "$150.000",
+        tag: "Aclarante",
+        tagColor: "#fef9c3",
+        tagTxt: "#ca8a04"
+    },
+    {
+        emoji: "💉",
+        color: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
+        nombre: "Botox / Rellenos",
+        desc: "Aplicación de toxina botulínica y rellenos de ácido hialurónico para suavizar arrugas y restaurar volumen.",
+        duracion: "30 min",
+        sesiones: "1",
+        precio: "$350.000",
+        tag: "Procedimiento",
+        tagColor: "#f0fdf4",
+        tagTxt: "#16a34a"
+    },
+    {
+        emoji: "🩺",
+        color: "linear-gradient(135deg, #e0f2fe, #bae6fd)",
+        nombre: "Consulta Dermatológica",
+        desc: "Valoración completa con dermatólogo especialista. Diagnóstico, análisis de piel y plan de tratamiento personalizado.",
+        duracion: "30 min",
+        sesiones: "1",
+        precio: "$60.000",
+        tag: "Primera visita",
+        tagColor: "#e0f2fe",
+        tagTxt: "#0284c7"
+    }
+];
+
+let tratActual = "";
+
+// Render cards
+/* ==========================================
+   GENERACIÓN DINÁMICA DE TARJETAS
+
+   Recorre el arreglo de tratamientos y crea
+   el contenido HTML mostrado en la cuadrícula.
+========================================== */
+
+document.getElementById("gridTratamientos").innerHTML = tratamientos.map((t, i) => `
+    <div class="card" onclick="abrirDetalle(${i})">
+        <div class="card-banner" style="background:${t.color}">${t.emoji}</div>
+        <div class="card-body">
+            <div class="card-tag" style="background:${t.tagColor};color:${t.tagTxt}">${t.tag}</div>
+            <div class="card-title">${t.nombre}</div>
+            <div class="card-desc">${t.desc.substring(0,60)}...</div>
+            <button class="btn-detail">Ver detalle →</button>
+        </div>
+    </div>
+`).join('');
+
+/* ==========================================
+   ABRIR DETALLE DEL TRATAMIENTO
+
+   Carga la información seleccionada dentro
+   del modal y posteriormente lo muestra.
+========================================== */
+
+function abrirDetalle(i) {
+    const t = tratamientos[i];
+    tratActual = t.nombre;
+
+    document.getElementById("mBanner").style.background = t.color;
+    document.getElementById("mBanner").innerText = t.emoji;
+    document.getElementById("mTag").innerText = t.tag;
+    document.getElementById("mTag").style.background = t.tagColor;
+    document.getElementById("mTag").style.color = t.tagTxt;
+    document.getElementById("mTitle").innerText = t.nombre;
+    document.getElementById("mDesc").innerText = t.desc;
+    document.getElementById("mDur").innerText = t.duracion;
+    document.getElementById("mSes").innerText = t.sesiones;
+    document.getElementById("mPrecio").innerText = t.precio;
+
+    document.getElementById("detailModal").classList.add("open");
+}
+
+/* ==========================================
+   CERRAR MODAL
+
+   Oculta la ventana emergente de detalles.
+========================================== */
+
+function cerrarModal() {
+    document.getElementById("detailModal").classList.remove("open");
+}
+
+/* ==========================================
+   AGENDAR DESDE EL MODAL
+
+   Guarda temporalmente el tratamiento
+   seleccionado y redirige al dashboard
+   para completar el proceso de cita.
+========================================== */
+
+function agendarDesdeModal() {
+    cerrarModal();
+    // Guardar tratamiento preseleccionado y redirigir al dashboard
+    sessionStorage.setItem("preselTrat", tratActual);
+    toast("Redirigiendo para agendar... 📅");
+    setTimeout(() => window.location.href = "dashboard.html", 1000);
+}
+
+document.getElementById("detailModal").addEventListener("click", e => {
+    if (e.target === document.getElementById("detailModal")) cerrarModal();
+});
+
+/* ==========================================
+   SISTEMA DE NOTIFICACIONES
+
+   Muestra mensajes temporales al usuario
+   para confirmar acciones realizadas.
+========================================== */
+
+function toast(msg) {
+    const el = document.getElementById("toast");
+    el.innerText = msg;
+    el.classList.add("show");
+    setTimeout(() => el.classList.remove("show"), 3000);
+}
+</script>
+</body>
+</html>

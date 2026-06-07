@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MegaDerc — Productos Dermatológicos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --azul: #2563eb;
+    --azul-light: #dbeafe;
+    --azul-dark: #1e40af;
+    --white: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --shadow: 0 4px 20px rgba(0,0,0,0.06);
+    --radius: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+}
+
+/* HEADER */
+.header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 28px; height: 64px; background: white;
+    box-shadow: 0 1px 0 #e2e8f0; position: sticky; top: 0; z-index: 100;
+}
+
+.header-logo { display: flex; align-items: center; gap: 10px; }
+.header-logo .dot {
+    width: 36px; height: 36px; background: var(--success); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.header-logo span { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; }
+
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.cart-toggle {
+    position: relative;
+    display: flex; align-items: center; gap: 6px;
+    background: #f0fdf4; border: 1px solid #bbf7d0;
+    border-radius: 10px; padding: 8px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+    cursor: pointer; color: var(--success); transition: all 0.2s;
+}
+.cart-toggle:hover { background: var(--success); color: white; border-color: var(--success); }
+
+.cart-badge {
+    position: absolute; top: -6px; right: -6px;
+    width: 20px; height: 20px; background: var(--danger); color: white;
+    border-radius: 50%; font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    display: none;
+}
+
+.back-btn {
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+    padding: 8px 16px; font-family: 'DM Sans', sans-serif; font-size: 13px;
+    font-weight: 600; cursor: pointer; color: var(--text); transition: all 0.2s;
+}
+.back-btn:hover { background: var(--azul-light); border-color: var(--azul); color: var(--azul); }
+
+/* MAIN */
+.main { max-width: 1100px; margin: 0 auto; padding: 32px 20px; }
+
+.page-title { font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 6px; }
+.page-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+
+/* FILTROS */
+.filtros {
+    display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap;
+}
+
+.filtro-btn {
+    padding: 6px 16px; border: 1.5px solid #e2e8f0; border-radius: 20px;
+    background: white; font-family: 'DM Sans', sans-serif; font-size: 12px;
+    font-weight: 600; cursor: pointer; color: var(--muted); transition: all 0.18s;
+}
+.filtro-btn:hover, .filtro-btn.active {
+    background: var(--azul); color: white; border-color: var(--azul);
+}
+
+/* GRID */
+.grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+}
+
+/* CARD PRODUCTO */
+.producto {
+    background: white; border-radius: var(--radius);
+    overflow: hidden; box-shadow: var(--shadow); border: 1px solid #f1f5f9;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.producto:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.09); }
+
+.prod-banner {
+    height: 100px; display: flex; align-items: center;
+    justify-content: center; font-size: 48px;
+}
+
+.prod-body { padding: 16px; }
+
+.prod-cat {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--muted); margin-bottom: 4px;
+}
+
+.prod-nombre {
+    font-family: 'Playfair Display', serif; font-size: 16px;
+    color: var(--text); margin-bottom: 4px;
+}
+
+.prod-desc {
+    font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 12px;
+}
+
+.prod-footer {
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.prod-precio {
+    font-size: 18px; font-weight: 700; color: var(--success);
+}
+
+.btn-add {
+    padding: 8px 16px; border: none; border-radius: 10px;
+    background: var(--success); color: white;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: all 0.18s;
+}
+.btn-add:hover { background: #059669; transform: scale(1.05); }
+
+/* CARRITO PANEL */
+.carrito-panel {
+    position: fixed; top: 64px; right: 0; bottom: 0;
+    width: 320px; background: white;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+    z-index: 200; transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex; flex-direction: column;
+}
+.carrito-panel.open { transform: translateX(0); }
+
+.carrito-header {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.carrito-title { font-family: 'Playfair Display', serif; font-size: 18px; }
+
+.close-cart {
+    background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);
+}
+
+.carrito-items {
+    flex: 1; overflow-y: auto; padding: 16px 20px;
+}
+
+.carrito-empty {
+    text-align: center; padding: 40px 0;
+    color: var(--muted); font-size: 14px;
+}
+.carrito-empty .icon { font-size: 40px; margin-bottom: 8px; }
+
+.cart-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid #f8fafc;
+}
+
+.cart-item-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+}
+
+.cart-item-info { flex: 1; }
+.cart-item-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.cart-item-price { font-size: 12px; color: var(--success); font-weight: 600; }
+
+.cart-item-del {
+    background: #fef2f2; border: none; border-radius: 8px; width: 28px; height: 28px;
+    cursor: pointer; font-size: 14px; color: var(--danger); transition: all 0.15s;
+}
+.cart-item-del:hover { background: var(--danger); color: white; }
+
+.carrito-footer {
+    padding: 16px 20px 24px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.total-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+}
+.total-label { font-size: 14px; color: var(--muted); font-weight: 500; }
+.total-val { font-size: 22px; font-weight: 700; color: var(--text); }
+
+.btn-pagar {
+    width: 100%; padding: 13px; border: none; border-radius: 12px;
+    background: var(--azul); color: white;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+}
+.btn-pagar:hover { background: var(--azul-dark); transform: translateY(-1px); }
+
+/* MODAL ÉXITO */
+.modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 600;
+    justify-content: center; align-items: center;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+    background: white; border-radius: 20px; padding: 36px 28px;
+    text-align: center; width: 340px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+    animation: pop 0.3s ease;
+}
+@keyframes pop { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.success-icon { font-size: 60px; margin-bottom: 14px; }
+.modal-title { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; }
+.modal-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+
+.btn-close-modal {
+    padding: 11px 28px; background: var(--azul); color: white; border: none;
+    border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.btn-close-modal:hover { background: var(--azul-dark); }
+
+/* TOAST */
+.toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--text); color: white;
+    padding: 12px 20px; border-radius: 12px;
+    font-size: 13px; font-weight: 500; z-index: 9999;
+    opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="header-logo">
+        <div class="dot">🧴</div>
+        <span>MegaDerc</span>
+    </div>
+    <div class="header-right">
+        <button class="cart-toggle" onclick="toggleCarrito()">
+            🛒 Carrito
+            <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+        <button class="back-btn" onclick="window.location.href='dashboard.html'">← Volver</button>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+    <div class="page-title">Productos dermatológicos</div>
+    <div class="page-sub">Línea profesional recomendada por nuestros especialistas</div>
+
+    <div class="filtros">
+        <button class="filtro-btn active" onclick="filtrar('todos', this)">Todos</button>
+        <button class="filtro-btn" onclick="filtrar('facial', this)">Cuidado facial</button>
+        <button class="filtro-btn" onclick="filtrar('solar', this)">Protección solar</button>
+        <button class="filtro-btn" onclick="filtrar('tratamiento', this)">Tratamientos</button>
+        <button class="filtro-btn" onclick="filtrar('hidratacion', this)">Hidratación</button>
+    </div>
+
+    <div class="grid" id="gridProductos"></div>
+</div>
+
+<!-- CARRITO PANEL -->
+<div class="carrito-panel" id="carritoPanel">
+    <div class="carrito-header">
+        <div class="carrito-title">🛒 Mi carrito</div>
+        <button class="close-cart" onclick="toggleCarrito()">✕</button>
+    </div>
+    <div class="carrito-items" id="carritoItems">
+        <div class="carrito-empty">
+            <div class="icon">🛒</div>
+            Tu carrito está vacío
+        </div>
+    </div>
+    <div class="carrito-footer">
+        <div class="total-row">
+            <span class="total-label">Total</span>
+            <span class="total-val">$<span id="totalVal">0.00</span></span>
+        </div>
+        <button class="btn-pagar" onclick="pagar()">Pagar ahora →</button>
+    </div>
+</div>
+
+<!-- MODAL ÉXITO -->
+<div class="modal-overlay" id="exitoModal">
+    <div class="modal-box">
+        <div class="success-icon">🎉</div>
+        <div class="modal-title">¡Compra exitosa!</div>
+        <div class="modal-sub">Tu pedido ha sido procesado. Nos pondremos en contacto contigo para coordinar la entrega.</div>
+        <button class="btn-close-modal" onclick="cerrarModal()">Perfecto, gracias</button>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const productos = [
+    { emoji:"💊", color:"#dbeafe", cat:"tratamiento", nombre:"Crema Antiacné Pro", desc:"Reduce acné activo y controla la producción de grasa. Con ácido salicílico al 2%.", precio:19.99 },
+    { emoji:"☀️", color:"#fef9c3", cat:"solar",       nombre:"Protector Solar SPF 50+", desc:"Protección UVA/UVB de amplio espectro. Fórmula no comedogénica.", precio:24.50 },
+    { emoji:"✨", color:"#ede9fe", cat:"tratamiento", nombre:"Sérum Rejuvenecedor", desc:"Vitamina C + retinol para combatir signos de envejecimiento y mejorar luminosidad.", precio:29.90 },
+    { emoji:"💧", color:"#d1fae5", cat:"hidratacion", nombre:"Gel Hidratante Intenso", desc:"Ácido hialurónico de triple acción. Hidratación duradera para pieles secas y sensibles.", precio:15.00 },
+    { emoji:"🫧", color:"#e0f2fe", cat:"facial",      nombre:"Limpiador Facial Suave", desc:"Fórmula sin sulfatos que limpia profundamente sin alterar el pH natural de la piel.", precio:12.50 },
+    { emoji:"🌙", color:"#fce7f3", cat:"facial",      nombre:"Crema Nocturna Repair", desc:"Con niacinamida y péptidos. Regenera la piel mientras duermes y reduce poros.", precio:18.00 },
+    { emoji:"🌿", color:"#f0fdf4", cat:"hidratacion", nombre:"Tónico Equilibrante", desc:"Prepara la piel para absorber mejor los tratamientos. Con aloe vera y agua termal.", precio:13.00 },
+    { emoji:"🔬", color:"#fff7ed", cat:"tratamiento", nombre:"Ampoule Anti-manchas", desc:"Complejo despigmentante con ácido kójico y alfa arbutina. Resultados desde 4 semanas.", precio:32.00 },
+    { emoji:"🧖", color:"#fdf4ff", cat:"facial",      nombre:"Mascarilla Kaolín", desc:"Arcilla purificante que absorbe el exceso de grasa y desobstruye poros en profundidad.", precio:16.50 }
+];
+
+let carrito = [];
+let catActual = "todos";
+
+/**
+ * Filtra los productos por categoría y actualiza la vista.
+ *
+ * @param {string} cat - Categoría seleccionada.
+ * @param {HTMLElement} btn - Botón que activó el filtro.
+ */
+
+function filtrar(cat, btn) {
+    catActual = cat;
+    document.querySelectorAll(".filtro-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderProductos();
+}
+
+/**
+ * Genera dinámicamente las tarjetas de productos
+ * según la categoría seleccionada.
+ *
+ * @returns {void}
+ */
+
+function renderProductos() {
+    const lista = catActual === "todos" ? productos : productos.filter(p => p.cat === catActual);
+    document.getElementById("gridProductos").innerHTML = lista.map((p, i) => {
+        const idx = productos.indexOf(p);
+        return `
+        <div class="producto">
+            <div class="prod-banner" style="background:${p.color}">${p.emoji}</div>
+            <div class="prod-body">
+                <div class="prod-cat">${p.cat}</div>
+                <div class="prod-nombre">${p.nombre}</div>
+                <div class="prod-desc">${p.desc}</div>
+                <div class="prod-footer">
+                    <div class="prod-precio">$${p.precio.toFixed(2)}</div>
+                    <button class="btn-add" onclick="agregar(${idx})">+ Agregar</button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+/**
+ * Agrega un producto al carrito de compras.
+ *
+ * @param {number} i - Índice del producto dentro del catálogo.
+ */
+
+function agregar(i) {
+    const p = productos[i];
+    carrito.push({ ...p, cartId: Date.now() + Math.random() });
+    renderCarrito();
+    toast("✅ " + p.nombre + " agregado");
+}
+
+/**
+ * Actualiza la visualización del carrito,
+ * el contador de productos y el total acumulado.
+ *
+ * @returns {void}
+ */
+
+function renderCarrito() {
+    const el = document.getElementById("carritoItems");
+    const badge = document.getElementById("cartBadge");
+
+    if (carrito.length === 0) {
+        el.innerHTML = `<div class="carrito-empty"><div class="icon">🛒</div>Tu carrito está vacío</div>`;
+        badge.style.display = "none";
+    } else {
+        el.innerHTML = carrito.map((p, i) => `
+            <div class="cart-item">
+                <div class="cart-item-icon" style="background:${p.color}">${p.emoji}</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">${p.nombre}</div>
+                    <div class="cart-item-price">$${p.precio.toFixed(2)}</div>
+                </div>
+                <button class="cart-item-del" onclick="quitar(${i})">✕</button>
+            </div>
+        `).join('');
+        badge.innerText = carrito.length;
+        badge.style.display = "flex";
+    }
+
+    const total = carrito.reduce((s, p) => s + p.precio, 0);
+    document.getElementById("totalVal").innerText = total.toFixed(2);
+}
+
+/**
+ * Elimina un producto del carrito.
+ *
+ * @param {number} i - Posición del producto en el carrito.
+ */
+
+function quitar(i) {
+    carrito.splice(i, 1);
+    renderCarrito();
+}
+
+/**
+ * Abre o cierra el panel lateral del carrito.
+ *
+ * @returns {void}
+ */
+
+function toggleCarrito() {
+    document.getElementById("carritoPanel").classList.toggle("open");
+}
+
+/**
+ * Procesa la compra actual.
+ * Si el carrito está vacío muestra una notificación.
+ *
+ * @returns {void}
+ */
+
+function pagar() {
+    if (carrito.length === 0) { toast("Tu carrito está vacío 🛒"); return; }
+    carrito = [];
+    renderCarrito();
+    document.getElementById("carritoPanel").classList.remove("open");
+    document.getElementById("exitoModal").classList.add("open");
+}
+
+/**
+ * Cierra el modal de compra exitosa.
+ *
+ * @returns {void}
+ */
+
+function cerrarModal() {
+    document.getElementById("exitoModal").classList.remove("open");
+}
+
+/**
+ * Muestra una notificación temporal al usuario.
+ *
+ * @param {string} msg - Mensaje a mostrar.
+ */
+
+function toast(msg) {
+    const el = document.getElementById("toast");
+    el.innerText = msg;
+    el.classList.add("show");
+    setTimeout(() => el.classList.remove("show"), 2500);
+}
+
+renderProductos();
+</script>
+</body>
+</html>

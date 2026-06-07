@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MegaDerc — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --azul: #2563eb;
+    --azul-light: #dbeafe;
+    --azul-dark: #1e40af;
+    --skin: #fdf6f0;
+    --white: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --purple: #7c3aed;
+    --radius: 16px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+}
+
+/* ===== HEADER ===== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 28px;
+    height: 64px;
+    background: white;
+    box-shadow: 0 1px 0 #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-logo .dot {
+    width: 36px; height: 36px;
+    background: var(--azul);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+}
+
+.header-logo span {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notif-btn {
+    position: relative;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.2s;
+}
+
+.notif-btn:hover { background: var(--azul-light); }
+
+.notif-badge {
+    position: absolute;
+    top: -4px; right: -4px;
+    width: 18px; height: 18px;
+    background: var(--danger);
+    color: white;
+    border-radius: 50%;
+    font-size: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 7px 14px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    transition: all 0.2s;
+}
+
+.profile-btn:hover { background: var(--azul-light); border-color: var(--azul); }
+
+.logout-btn {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: var(--danger);
+    border-radius: 10px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover { background: var(--danger); color: white; }
+
+/* ===== MAIN ===== */
+.main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 20px;
+}
+
+/* BIENVENIDA */
+.welcome {
+    margin-bottom: 24px;
+}
+
+.welcome h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--text);
+}
+
+.welcome p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* ===== STAT CARDS ===== */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid #f1f5f9;
+    transition: transform 0.2s;
+}
+
+.stat:hover { transform: translateY(-2px); }
+
+.stat-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.stat-icon.blue   { background: #dbeafe; }
+.stat-icon.green  { background: #d1fae5; }
+.stat-icon.orange { background: #ffedd5; }
+.stat-icon.purple { background: #ede9fe; }
+
+.stat-info h4 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.stat-info .num {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+}
+
+/* ===== GRID PRINCIPAL ===== */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+}
+
+/* ===== PANEL ===== */
+.panel {
+    background: white;
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+    border: 1px solid #f1f5f9;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.panel-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+}
+
+.panel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* BANNER ILUSTRACIÓN */
+.panel-banner {
+    width: 100%;
+    height: 80px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin-bottom: 14px;
+}
+
+.banner-blue   { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.banner-green  { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+.banner-purple { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+.banner-orange { background: linear-gradient(135deg, #ffedd5, #fed7aa); }
+
+/* BOTONES */
+.btn {
+    width: 100%;
+    padding: 11px 16px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn:first-child { margin-top: 0; }
+
+.btn-blue   { background: var(--azul); color: white; }
+.btn-blue:hover { background: var(--azul-dark); }
+
+.btn-green  { background: var(--success); color: white; }
+.btn-green:hover { background: #059669; }
+
+.btn-orange { background: var(--warning); color: white; }
+.btn-orange:hover { background: #d97706; }
+
+.btn-purple { background: var(--purple); color: white; }
+.btn-purple:hover { background: #6d28d9; }
+
+.btn-danger { background: var(--danger); color: white; }
+.btn-danger:hover { background: #dc2626; }
+
+.btn-ghost {
+    background: #f8fafc;
+    color: var(--text);
+    border: 1px solid #e2e8f0;
+}
+.btn-ghost:hover { background: var(--azul-light); border-color: var(--azul); color: var(--azul); }
+
+/* ===== NOTIFICACIONES PANEL ===== */
+.notif-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.notif-item:last-child { border-bottom: none; }
+
+.notif-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+}
+
+.notif-dot.new { background: var(--azul); }
+.notif-dot.ok  { background: var(--success); }
+.notif-dot.warn{ background: var(--warning); }
+
+.notif-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+.notif-time {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+/* ===== RESEÑAS ===== */
+.stars {
+    display: flex;
+    gap: 4px;
+    margin: 6px 0;
+}
+
+.star {
+    font-size: 20px;
+    cursor: pointer;
+    color: #d1d5db;
+    transition: color 0.15s;
+}
+
+.star.active, .star:hover { color: var(--warning); }
+
+.review-item {
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #fafafa;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.review-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.review-stars {
+    font-size: 13px;
+    color: var(--warning);
+}
+
+.review-text {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 500;
+    justify-content: center;
+    align-items: center;
+    animation: fadein 0.2s ease;
+}
+
+.modal-overlay.open { display: flex; }
+
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-box {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    width: 400px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+    animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+.modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--text);
+    margin-bottom: 20px;
+}
+
+/* FORM ELEMENTS EN MODAL */
+.form-field {
+    margin-bottom: 14px;
+}
+
+.form-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    background: #fafbfc;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    border-color: var(--azul);
+    background: white;
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* CITA ITEM */
+.cita-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cita-info {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.cita-info strong {
+    color: var(--text);
+}
+
+.cita-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+}
+
+.btn-sm-edit   { background: var(--azul-light); color: var(--azul); }
+.btn-sm-del    { background: #fef2f2; color: var(--danger); }
+
+.btn-sm-edit:hover { background: var(--azul); color: white; }
+.btn-sm-del:hover  { background: var(--danger); color: white; }
+
+/* FOTO PERFIL */
+.avatar {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--azul-light);
+    display: block;
+    margin: 0 auto 10px;
+    background: var(--azul-light);
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-wrap {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+/* PANEL FULL WIDTH */
+.panel-full {
+    grid-column: 1 / -1;
+}
+
+/* ===== TOAST ===== */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--text);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    pointer-events: none;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+    <div class="header-logo">
+        <div class="dot">✨</div>
+        <span>MegaDerc</span>
+    </div>
+    <div class="header-right">
+        <button class="notif-btn" onclick="abrirModal('notifModal')" title="Notificaciones">
+            🔔
+            <span class="notif-badge" id="notifBadge">2</span>
+        </button>
+        <button class="profile-btn" onclick="abrirModal('profileModal')">
+            👤 <span id="headerNombre">Perfil</span>
+        </button>
+        <button class="logout-btn" onclick="logout()">Salir</button>
+    </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
+
+    <!-- BIENVENIDA -->
+    <div class="welcome">
+        <h2 id="welcomeText">Buenos días</h2>
+        <p>Gestiona tus citas, productos y tratamientos en un solo lugar.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-icon blue">📅</div>
+            <div class="stat-info">
+                <h4>Citas activas</h4>
+                <div class="num" id="statCitas">0</div>
+            </div>
+        </div>
+        <div class="stat">
+            <div class="stat-icon green">💆</div>
+            <div class="stat-info">
+                <h4>Servicios</h4>
+                <div class="num">8</div>
+            </div>
+        </div>
+        <div class="stat">
+            <div class="stat-icon orange">🧴</div>
+            <div class="stat-info">
+                <h4>Productos</h4>
+                <div class="num">6</div>
+            </div>
+        </div>
+        <div class="stat">
+            <div class="stat-icon purple">⭐</div>
+            <div class="stat-info">
+                <h4>Reseñas</h4>
+                <div class="num" id="statReseñas">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="grid">
+
+        <!-- CITAS -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-icon" style="background:#dbeafe">📅</div>
+                <div class="panel-title">Gestión de citas</div>
+            </div>
+            <div class="panel-banner banner-blue">📅</div>
+            <button class="btn btn-blue" onclick="abrirModal('agendarModal')">
+                ➕ Agendar nueva cita
+            </button>
+            <button class="btn btn-orange" onclick="abrirModal('verCitasModal')">
+                📋 Ver / Modificar / Cancelar
+            </button>
+        </div>
+
+        <!-- NOTIFICACIONES -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-icon" style="background:#fef9c3">🔔</div>
+                <div class="panel-title">Notificaciones</div>
+            </div>
+            <div id="notifPanel">
+                <!-- se llena por JS -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- GRID 3 COLUMNAS -->
+    <div class="grid-3">
+
+        <!-- PRODUCTOS -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-icon" style="background:#d1fae5">🧴</div>
+                <div class="panel-title">Productos</div>
+            </div>
+            <div class="panel-banner banner-green">🧴</div>
+            <button class="btn btn-green" onclick="window.location.href='productos.html'">
+                Ir al catálogo
+            </button>
+        </div>
+
+        <!-- TRATAMIENTOS -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-icon" style="background:#ede9fe">✨</div>
+                <div class="panel-title">Tratamientos</div>
+            </div>
+            <div class="panel-banner banner-purple">✨</div>
+            <button class="btn btn-purple" onclick="window.location.href='tratamientos.html'">
+                Ver tratamientos
+            </button>
+        </div>
+
+        <!-- RESEÑAS -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-icon" style="background:#ffedd5">⭐</div>
+                <div class="panel-title">Reseñas</div>
+            </div>
+            <div class="panel-banner banner-orange">⭐</div>
+            <button class="btn btn-orange" onclick="abrirModal('reseñaModal')">
+                Escribir reseña
+            </button>
+            <button class="btn btn-ghost" onclick="abrirModal('verReseñasModal')">
+                Ver reseñas
+            </button>
+        </div>
+
+    </div>
+
+</div><!-- /main -->
+
+<!-- ===================== MODALES ===================== -->
+
+<!-- AGENDAR CITA -->
+<div class="modal-overlay" id="agendarModal">
+    <div class="modal-box">
+        <div class="modal-title">📅 Agendar cita</div>
+
+        <div class="form-field">
+            <label>Fecha</label>
+            <input type="date" id="agFecha">
+        </div>
+        <div class="form-field">
+            <label>Hora</label>
+            <input type="time" id="agHora">
+        </div>
+        <div class="form-field">
+            <label>Tratamiento</label>
+            <select id="agTratamiento">
+                <option>Limpieza facial profunda</option>
+                <option>Rejuvenecimiento facial</option>
+                <option>Tratamiento antiacné</option>
+                <option>Hidratación profunda</option>
+                <option>Peeling químico</option>
+                <option>Tratamiento manchas</option>
+                <option>Botox / rellenos</option>
+                <option>Consulta general</option>
+            </select>
+        </div>
+        <div class="form-field">
+            <label>Notas (opcional)</label>
+            <textarea id="agNotas" placeholder="Información adicional para el especialista..."></textarea>
+        </div>
+
+        <button class="btn btn-blue" onclick="guardarCita()">✅ Guardar cita</button>
+        <button class="btn btn-ghost" style="margin-top:8px" onclick="cerrarModal('agendarModal')">Cancelar</button>
+    </div>
+</div>
+
+<!-- VER / MODIFICAR / CANCELAR CITAS -->
+<div class="modal-overlay" id="verCitasModal">
+    <div class="modal-box">
+        <div class="modal-title">📋 Mis citas</div>
+        <div id="listaCitas"></div>
+        <button class="btn btn-ghost" style="margin-top:8px" onclick="cerrarModal('verCitasModal')">Cerrar</button>
+    </div>
+</div>
+
+<!-- EDITAR CITA -->
+<div class="modal-overlay" id="editarCitaModal">
+    <div class="modal-box">
+        <div class="modal-title">✏️ Modificar cita</div>
+
+        <input type="hidden" id="editIdx">
+
+        <div class="form-field">
+            <label>Fecha</label>
+            <input type="date" id="editFecha">
+        </div>
+        <div class="form-field">
+            <label>Hora</label>
+            <input type="time" id="editHora">
+        </div>
+        <div class="form-field">
+            <label>Tratamiento</label>
+            <select id="editTratamiento">
+                <option>Limpieza facial profunda</option>
+                <option>Rejuvenecimiento facial</option>
+                <option>Tratamiento antiacné</option>
+                <option>Hidratación profunda</option>
+                <option>Peeling químico</option>
+                <option>Tratamiento manchas</option>
+                <option>Botox / rellenos</option>
+                <option>Consulta general</option>
+            </select>
+        </div>
+        <div class="form-field">
+            <label>Notas</label>
+            <textarea id="editNotas"></textarea>
+        </div>
+
+        <button class="btn btn-blue" onclick="guardarEdicion()">💾 Guardar cambios</button>
+        <button class="btn btn-ghost" style="margin-top:8px" onclick="cerrarModal('editarCitaModal')">Cancelar</button>
+    </div>
+</div>
+
+<!-- NOTIFICACIONES -->
+<div class="modal-overlay" id="notifModal">
+    <div class="modal-box">
+        <div class="modal-title">🔔 Notificaciones</div>
+        <div id="notifLista"></div>
+        <button class="btn btn-ghost" style="margin-top:16px" onclick="marcarLeidas()">✅ Marcar todas como leídas</button>
+        <button class="btn btn-ghost" style="margin-top:8px" onclick="cerrarModal('notifModal')">Cerrar</button>
+    </div>
+</div>
+
+<!-- PERFIL -->
+<div class="modal-overlay" id="profileModal">
+    <div class="modal-box">
+        <div class="modal-title">👤 Mi perfil</div>
+
+        <div class="avatar-wrap">
+            <div class="avatar" id="avatarIcon">👤</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">Foto de perfil</div>
+            <input type="file" id="fotoInput" accept="image/*" style="display:none" onchange="cargarFoto(event)">
+            <button class="btn btn-ghost" style="width:auto;padding:6px 14px;margin-top:8px;font-size:12px" onclick="document.getElementById('fotoInput').click()">
+                📷 Cambiar foto
+            </button>
+        </div>
+
+        <div class="form-field">
+            <label>Nombre completo</label>
+            <input type="text" id="perfilNombre">
+        </div>
+        <div class="form-field">
+            <label>Teléfono</label>
+            <input type="text" id="perfilTelefono">
+        </div>
+        <div class="form-field">
+            <label>Correo (no editable)</label>
+            <input type="email" id="perfilCorreo" disabled style="background:#f8fafc;color:var(--muted)">
+        </div>
+
+        <button class="btn btn-blue" onclick="guardarPerfil()">💾 Guardar cambios</button>
+        <button class="btn btn-ghost" style="margin-top:8px" onclick="cerrarModal('profileModal')">Cerrar</button>
+    </div>
+</div>
+
+<!-- ESCRIBIR RESEÑA -->
+<div class="modal-overlay" id="reseñaModal">
+    <div class="modal-box">
+        <div class="modal-title">⭐ Escribir reseña</div>
+
+        <div class="form-field">
+            <label>Servicio</label>
+            <select id="resTratamiento">
+                <option>Limpieza facial profunda</option>
+                <option>Rejuvenecimiento facial</option>
+                <option>Tratamiento antiacné</option>
+                <option>Hidratación profunda</option>
+                <option>Peeling químico</option>
+                <option>Consulta general</option>
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label>Calificación</label>
+            <div class="stars" id="starsInput">
+                <span class="star" onclick="setStars(1)" data-v="1">★</span>
+                <span class="star" onclick="setStars(2)" data-v="2">★</span>
+                <span class="star" onclick="setStars(3)" data-v="3">★</span>
+                <span class="star" onclick="setStars(4)" data-v="4">★</span>
+                <span class="star" onclick="setStars(5)" data-v="5">★</span>
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label>Comentario</label>
+            <textarea id="resComentario" placeholder="Cuéntanos tu experiencia..."></textarea>
+        </div>
+
+        <button class="btn btn-orange" onclick="publicarReseña()">📢 Publicar reseña</button>
+        <button class="btn btn-ghost" style="margin-top:8px" onclick="cerrarModal('reseñaModal')">Cancelar</button>
+    </div>
+</div>
+
+<!-- VER RESEÑAS -->
+<div class="modal-overlay" id="verReseñasModal">
+    <div class="modal-box">
+        <div class="modal-title">⭐ Reseñas del consultorio</div>
+        <div id="listaReseñas"></div>
+        <button class="btn btn-ghost" style="margin-top:12px" onclick="cerrarModal('verReseñasModal')">Cerrar</button>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ===================== JS ===================== -->
+<script>
+// ===== SESIÓN =====
+const sesion = localStorage.getItem("sesion");
+if (!sesion) { window.location.href = "index.html"; }
+
+let user = JSON.parse(localStorage.getItem(sesion)) || {};
+let citas = JSON.parse(localStorage.getItem("citas_" + sesion)) || [];
+let reseñas = JSON.parse(localStorage.getItem("reseñas")) || [];
+let notifs = JSON.parse(localStorage.getItem("notifs_" + sesion)) || [];
+let estrellas = 0;
+
+// Si no hay notificaciones, crear las iniciales
+if (notifs.length === 0) {
+    notifs = [
+        { texto: "Bienvenido a MegaDerc. ¡Tu cuenta está activa!", tipo: "new", hora: "Hoy", leida: false },
+        { texto: "Recuerda agendar tu cita de revisión dermatológica.", tipo: "warn", hora: "Hoy", leida: false }
+    ];
+    guardarNotifs();
+}
+
+// Actualizar notificaciones de recordatorio según citas próximas
+actualizarNotifsCitas();
+
+// ===== INIT =====
+
+/**
+ * Inicializa el dashboard cargando datos del usuario,
+ * estadísticas y notificaciones.
+ *
+ */
+
+function init() {
+    // Bienvenida
+    const hora = new Date().getHours();
+    const saludo = hora < 12 ? "Buenos días" : hora < 18 ? "Buenas tardes" : "Buenas noches";
+    document.getElementById("welcomeText").innerText = saludo + ", " + (user.nombre || "paciente") + " 👋";
+    document.getElementById("headerNombre").innerText = (user.nombre || "Perfil").split(" ")[0];
+
+    // Stats
+    document.getElementById("statCitas").innerText = citas.length;
+    document.getElementById("statReseñas").innerText = reseñas.length;
+
+    // Badge notificaciones
+    const noLeidas = notifs.filter(n => !n.leida).length;
+    document.getElementById("notifBadge").innerText = noLeidas;
+    document.getElementById("notifBadge").style.display = noLeidas > 0 ? "flex" : "none";
+
+    renderNotifPanel();
+}
+
+// ===== NOTIFICACIONES =====
+function renderNotifPanel() {
+    const el = document.getElementById("notifPanel");
+    const ultimas = notifs.slice(-3).reverse();
+    if (ultimas.length === 0) {
+        el.innerHTML = `<p style="font-size:13px;color:var(--muted);text-align:center;padding:16px 0">Sin notificaciones</p>`;
+        return;
+    }
+    el.innerHTML = ultimas.map(n => `
+        <div class="notif-item">
+            <div class="notif-dot ${n.tipo}"></div>
+            <div>
+                <div class="notif-text">${n.texto}</div>
+                <div class="notif-time">${n.hora}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function abrirNotifModal() {
+    const el = document.getElementById("notifLista");
+    if (notifs.length === 0) {
+        el.innerHTML = `<p style="color:var(--muted);font-size:13px;text-align:center">Sin notificaciones</p>`;
+        return;
+    }
+    el.innerHTML = notifs.slice().reverse().map((n, i) => `
+        <div class="notif-item" style="opacity:${n.leida ? 0.5 : 1}">
+            <div class="notif-dot ${n.tipo}"></div>
+            <div>
+                <div class="notif-text">${n.texto}</div>
+                <div class="notif-time">${n.hora}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function marcarLeidas() {
+    notifs.forEach(n => n.leida = true);
+    guardarNotifs();
+    document.getElementById("notifBadge").style.display = "none";
+    abrirNotifModal();
+    toast("Notificaciones marcadas como leídas ✅");
+}
+
+function guardarNotifs() {
+    localStorage.setItem("notifs_" + sesion, JSON.stringify(notifs));
+}
+
+function actualizarNotifsCitas() {
+    const hoy = new Date();
+    hoy.setHours(0,0,0,0);
+    citas.forEach(c => {
+        const fc = new Date(c.fecha + "T00:00:00");
+        const diff = Math.ceil((fc - hoy) / (1000*60*60*24));
+        if (diff === 1) {
+            const existe = notifs.find(n => n.texto.includes("mañana") && n.texto.includes(c.tratamiento));
+            if (!existe) {
+                notifs.push({
+                    texto: `⏰ Recordatorio: tienes cita mañana — ${c.tratamiento} a las ${c.hora}`,
+                    tipo: "warn",
+                    hora: "Hoy",
+                    leida: false
+                });
+                guardarNotifs();
+            }
+        }
+        if (diff === 0) {
+            const existe = notifs.find(n => n.texto.includes("HOY") && n.texto.includes(c.tratamiento));
+            if (!existe) {
+                notifs.push({
+                    texto: `🔴 HOY tienes cita — ${c.tratamiento} a las ${c.hora}`,
+                    tipo: "new",
+                    hora: "Hoy",
+                    leida: false
+                });
+                guardarNotifs();
+            }
+        }
+    });
+}
+
+// ===== CITAS =====
+
+/**
+ * Guarda una nueva cita médica en el almacenamiento local.
+ * Valida que la fecha y la hora hayan sido seleccionadas.
+ *
+ */
+
+function guardarCita() {
+    const fecha = document.getElementById("agFecha").value;
+    const hora  = document.getElementById("agHora").value;
+    const trat  = document.getElementById("agTratamiento").value;
+    const notas = document.getElementById("agNotas").value;
+
+    if (!fecha || !hora) { toast("Completa fecha y hora ⚠️"); return; }
+
+    citas.push({ fecha, hora, tratamiento: trat, notas });
+    saveCitas();
+
+    // Notificación
+    notifs.push({
+        texto: `✅ Cita agendada: ${trat} el ${fecha} a las ${hora}`,
+        tipo: "ok",
+        hora: "Ahora",
+        leida: false
+    });
+    guardarNotifs();
+
+    cerrarModal("agendarModal");
+    init();
+    toast("Cita agendada correctamente ✅");
+}
+
+function abrirVerCitas() {
+    renderCitas();
+    abrirModal("verCitasModal");
+}
+
+function renderCitas() {
+    const el = document.getElementById("listaCitas");
+    if (citas.length === 0) {
+        el.innerHTML = `<p style="color:var(--muted);font-size:13px;text-align:center;padding:16px 0">No tienes citas registradas.<br>¡Agenda tu primera cita!</p>`;
+        return;
+    }
+    el.innerHTML = citas.map((c, i) => `
+        <div class="cita-item">
+            <div class="cita-info">
+                <strong>${c.tratamiento}</strong><br>
+                📅 ${c.fecha} &nbsp; 🕐 ${c.hora}
+                ${c.notas ? `<br><span style="color:var(--muted);font-size:11px">📝 ${c.notas}</span>` : ''}
+            </div>
+            <div class="cita-actions">
+                <button class="btn-sm btn-sm-edit" onclick="abrirEditar(${i})">✏️ Editar</button>
+                <button class="btn-sm btn-sm-del"  onclick="eliminarCita(${i})">🗑️ Cancelar</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function abrirEditar(i) {
+    const c = citas[i];
+    document.getElementById("editIdx").value = i;
+    document.getElementById("editFecha").value = c.fecha;
+    document.getElementById("editHora").value = c.hora;
+    document.getElementById("editNotas").value = c.notas || "";
+    // Seleccionar tratamiento
+    const sel = document.getElementById("editTratamiento");
+    for (let o of sel.options) { if (o.value === c.tratamiento) { o.selected = true; break; } }
+    cerrarModal("verCitasModal");
+    abrirModal("editarCitaModal");
+}
+
+function guardarEdicion() {
+    const i     = parseInt(document.getElementById("editIdx").value);
+    const fecha = document.getElementById("editFecha").value;
+    const hora  = document.getElementById("editHora").value;
+    const trat  = document.getElementById("editTratamiento").value;
+    const notas = document.getElementById("editNotas").value;
+
+    if (!fecha || !hora) { toast("Completa fecha y hora ⚠️"); return; }
+
+    citas[i] = { fecha, hora, tratamiento: trat, notas };
+    saveCitas();
+
+    notifs.push({
+        texto: `✏️ Cita modificada: ${trat} ahora el ${fecha} a las ${hora}`,
+        tipo: "ok",
+        hora: "Ahora",
+        leida: false
+    });
+    guardarNotifs();
+
+    cerrarModal("editarCitaModal");
+    init();
+    toast("Cita modificada correctamente ✅");
+}
+
+function eliminarCita(i) {
+
+    /**
+ * Elimina una cita seleccionada por el usuario.
+ *
+ * @param {number} i - Índice de la cita dentro del arreglo.
+ * @returns {void}
+ */
+
+    if (!confirm("¿Cancelar esta cita?")) return;
+    const c = citas[i];
+    citas.splice(i, 1);
+    saveCitas();
+
+    notifs.push({
+        texto: `❌ Cita cancelada: ${c.tratamiento} del ${c.fecha}`,
+        tipo: "warn",
+        hora: "Ahora",
+        leida: false
+    });
+    guardarNotifs();
+
+    renderCitas();
+    init();
+    toast("Cita cancelada ❌");
+}
+
+function saveCitas() {
+    localStorage.setItem("citas_" + sesion, JSON.stringify(citas));
+}
+
+// ===== RESEÑAS =====
+function setStars(n) {
+    estrellas = n;
+    document.querySelectorAll("#starsInput .star").forEach((s, i) => {
+        s.classList.toggle("active", i < n);
+    });
+}
+
+function publicarReseña() {
+    if (estrellas === 0) { toast("Selecciona una calificación ⭐"); return; }
+    const texto = document.getElementById("resComentario").value.trim();
+    const trat  = document.getElementById("resTratamiento").value;
+    if (!texto) { toast("Escribe un comentario ✏️"); return; }
+
+    reseñas.push({
+        nombre: user.nombre || "Paciente",
+        tratamiento: trat,
+        estrellas,
+        texto,
+        fecha: new Date().toLocaleDateString("es-CO")
+    });
+
+    localStorage.setItem("reseñas", JSON.stringify(reseñas));
+    document.getElementById("resComentario").value = "";
+    estrellas = 0;
+    setStars(0);
+
+    cerrarModal("reseñaModal");
+    init();
+    toast("¡Reseña publicada! Gracias ⭐");
+}
+
+function renderReseñas() {
+    const el = document.getElementById("listaReseñas");
+    if (reseñas.length === 0) {
+        el.innerHTML = `<p style="color:var(--muted);font-size:13px;text-align:center">Aún no hay reseñas. ¡Sé el primero!</p>`;
+        return;
+    }
+    el.innerHTML = reseñas.slice().reverse().map(r => `
+        <div class="review-item">
+            <div class="review-header">
+                <span class="review-name">👤 ${r.nombre}</span>
+                <span class="review-stars">${"★".repeat(r.estrellas)}${"☆".repeat(5 - r.estrellas)}</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px">${r.tratamiento} · ${r.fecha}</div>
+            <div class="review-text">${r.texto}</div>
+        </div>
+    `).join('');
+}
+
+// ===== PERFIL =====
+function abrirPerfil() {
+    document.getElementById("perfilNombre").value   = user.nombre   || "";
+    document.getElementById("perfilTelefono").value = user.telefono || "";
+    document.getElementById("perfilCorreo").value   = user.email    || sesion;
+    if (user.foto) {
+        document.getElementById("avatarIcon").innerHTML = `<img src="${user.foto}" style="width:70px;height:70px;border-radius:50%;object-fit:cover">`;
+    }
+}
+
+/**
+ * Actualiza la información del perfil del usuario
+ * y la almacena en localStorage.
+ *
+ */
+
+function guardarPerfil() {
+    user.nombre   = document.getElementById("perfilNombre").value.trim();
+    user.telefono = document.getElementById("perfilTelefono").value.trim();
+    localStorage.setItem(sesion, JSON.stringify(user));
+    cerrarModal("profileModal");
+    init();
+    toast("Perfil actualizado ✅");
+}
+
+function cargarFoto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        user.foto = ev.target.result;
+        document.getElementById("avatarIcon").innerHTML = `<img src="${user.foto}" style="width:70px;height:70px;border-radius:50%;object-fit:cover">`;
+        localStorage.setItem(sesion, JSON.stringify(user));
+        toast("Foto actualizada ✅");
+    };
+    reader.readAsDataURL(file);
+}
+
+// ===== MODAL HELPERS =====
+
+/**
+ * Abre un modal según el identificador recibido.
+ *
+ */
+
+function abrirModal(id) {
+    document.getElementById(id).classList.add("open");
+    if (id === "notifModal")      abrirNotifModal();
+    if (id === "profileModal")    abrirPerfil();
+    if (id === "verCitasModal")   renderCitas();
+    if (id === "verReseñasModal") renderReseñas();
+}
+
+function cerrarModal(id) {
+    document.getElementById(id).classList.remove("open");
+}
+
+// Cerrar modal al click fuera
+document.querySelectorAll(".modal-overlay").forEach(m => {
+    m.addEventListener("click", e => {
+        if (e.target === m) m.classList.remove("open");
+    });
+});
+
+// ===== TOAST =====
+
+/**
+ * Muestra una notificación temporal en pantalla.
+ * @param {string} msg - Mensaje que se mostrará al usuario.
+ * @returns {void}
+ */
+
+function toast(msg) {
+    const el = document.getElementById("toast");
+    el.innerText = msg;
+    el.classList.add("show");
+    setTimeout(() => el.classList.remove("show"), 3000);
+}
+
+// ===== LOGOUT =====
+function logout() {
+    if (confirm("¿Cerrar sesión?")) {
+        localStorage.removeItem("sesion");
+        window.location.href = "index.html";
+    }
+}
+
+// ===== ARRANQUE =====
+init();
+</script>
+</body>
+</html>
